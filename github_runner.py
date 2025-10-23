@@ -1,10 +1,12 @@
+#!/usr/bin/env python3
 """
-定时回复脚本 - 每隔15秒向指定帖子发布带时间戳的消息
+GitHub Actions 运行器
+专门为GitHub Actions环境优化的定时回复脚本
 """
-import time
-import logging
 import os
 import sys
+import time
+import logging
 from datetime import datetime, timedelta
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -14,18 +16,20 @@ from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from config import Config
 
-class TimedReplyBot:
-    def __init__(self, target_url, interval_seconds=15):
+class GitHubTimedReplyBot:
+    def __init__(self, target_url, interval_seconds=15, max_runtime_hours=1):
         """
-        初始化定时回复机器人
+        初始化GitHub定时回复机器人
         
         Args:
             target_url: 目标帖子URL
             interval_seconds: 回复间隔（秒），默认15秒
+            max_runtime_hours: 最大运行时间（小时），默认1小时
         """
         self.config = Config()
         self.target_url = target_url
         self.interval_seconds = interval_seconds
+        self.max_runtime_hours = max_runtime_hours
         self.driver = None
         self.reply_count = 0
         self.start_time = None
@@ -38,7 +42,7 @@ class TimedReplyBot:
             level=logging.INFO,
             format='%(asctime)s - %(levelname)s - %(message)s',
             handlers=[
-                logging.FileHandler('timed_reply.log', encoding='utf-8'),
+                logging.FileHandler('github_timed_reply.log', encoding='utf-8'),
                 logging.StreamHandler()
             ]
         )
@@ -47,13 +51,15 @@ class TimedReplyBot:
     def init_driver(self):
         """初始化浏览器驱动"""
         chrome_options = Options()
-        if self.config.HEADLESS:
-            chrome_options.add_argument('--headless')
-        chrome_options.add_argument(f'--user-agent={self.config.USER_AGENT}')
+        chrome_options.add_argument('--headless')
         chrome_options.add_argument('--no-sandbox')
         chrome_options.add_argument('--disable-dev-shm-usage')
         chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument('--disable-extensions')
+        chrome_options.add_argument('--disable-web-security')
+        chrome_options.add_argument('--allow-running-insecure-content')
         chrome_options.add_argument('--window-size=1920,1080')
+        chrome_options.add_argument(f'--user-agent={self.config.USER_AGENT}')
         
         try:
             self.driver = webdriver.Chrome(options=chrome_options)
@@ -128,28 +134,6 @@ class TimedReplyBot:
             password_input.clear()
             password_input.send_keys(self.config.PASSWORD)
             
-            # 处理安全提问字段（如果存在）
-            try:
-                security_selectors = [
-                    (By.NAME, "questionid"),
-                    (By.ID, "questionid"),
-                    (By.CSS_SELECTOR, "select[name='questionid']")
-                ]
-                
-                for selector_type, selector_value in security_selectors:
-                    try:
-                        security_element = self.driver.find_element(selector_type, selector_value)
-                        from selenium.webdriver.support.ui import Select
-                        select = Select(security_element)
-                        if len(select.options) > 0:
-                            select.select_by_index(0)
-                            self.logger.info("Security question field handled")
-                        break
-                    except:
-                        continue
-            except Exception as e:
-                self.logger.debug(f"Security question field handling: {e}")
-            
             # 查找登录按钮
             login_button = None
             button_selectors = [
@@ -211,49 +195,8 @@ class TimedReplyBot:
         """生成带时间戳的消息"""
         now = datetime.now()
         timestamp = now.strftime("%Y-%m-%d %H:%M:%S")
-        message = f"Auto reply - Timestamp: {timestamp}"
+        message = f"🤖 GitHub Actions Auto Reply - {timestamp}"
         return message
-    
-    def display_stats(self, next_reply_time=None):
-        """显示统计信息"""
-        if self.start_time is None:
-            self.start_time = datetime.now()
-        
-        current_time = datetime.now()
-        runtime = current_time - self.start_time
-        
-        # 计算运行时间
-        hours, remainder = divmod(runtime.total_seconds(), 3600)
-        minutes, seconds = divmod(remainder, 60)
-        
-        # 计算平均回复间隔
-        avg_interval = 0
-        if self.reply_count > 0:
-            avg_interval = runtime.total_seconds() / self.reply_count
-        
-        # 清屏并显示统计信息
-        os.system('cls' if os.name == 'nt' else 'clear')
-        
-        print("=" * 80)
-        print("🤖 TIMED REPLY BOT - STATISTICS")
-        print("=" * 80)
-        print(f"📊 Target Post: {self.target_url}")
-        print(f"⏱️  Reply Interval: {self.interval_seconds} seconds")
-        print(f"📈 Total Replies: {self.reply_count}")
-        print(f"⏰ Runtime: {int(hours):02d}:{int(minutes):02d}:{int(seconds):02d}")
-        print(f"📊 Average Interval: {avg_interval:.1f} seconds")
-        
-        if self.last_reply_time:
-            print(f"🕐 Last Reply: {self.last_reply_time.strftime('%Y-%m-%d %H:%M:%S')}")
-        
-        if next_reply_time:
-            print(f"⏳ Next Reply: {next_reply_time.strftime('%Y-%m-%d %H:%M:%S')}")
-            remaining = (next_reply_time - current_time).total_seconds()
-            print(f"⏱️  Time Remaining: {remaining:.0f} seconds")
-        
-        print("=" * 80)
-        print("Press Ctrl+C to stop the bot")
-        print("=" * 80)
     
     def post_reply(self, message):
         """发布回复"""
@@ -298,7 +241,7 @@ class TimedReplyBot:
                     self.logger.info(f"Successfully posted reply #{self.reply_count} (alternative method): {message}")
                     return True
                     
-                except NoSuchElementException:
+                except NoElementException:
                     self.logger.error("No reply box found")
                     return False
                 
@@ -308,23 +251,21 @@ class TimedReplyBot:
     
     def run_timed_reply(self):
         """运行定时回复任务"""
-        self.logger.info("Starting timed reply task")
+        self.logger.info("Starting GitHub Actions timed reply task")
         self.logger.info(f"Target post: {self.target_url}")
         self.logger.info(f"Reply interval: {self.interval_seconds} seconds")
+        self.logger.info(f"Max runtime: {self.max_runtime_hours} hours")
         
         # 登录
         if not self.login():
             self.logger.error("Login failed, cannot continue")
             return
         
+        self.start_time = datetime.now()
+        max_end_time = self.start_time + timedelta(hours=self.max_runtime_hours)
+        
         try:
-            while True:
-                # 计算下一次回复时间
-                next_reply_time = datetime.now() + timedelta(seconds=self.interval_seconds)
-                
-                # 显示统计信息
-                self.display_stats(next_reply_time)
-                
+            while datetime.now() < max_end_time:
                 # 生成带时间戳的消息
                 message = self.get_timestamp_message()
                 
@@ -333,23 +274,21 @@ class TimedReplyBot:
                 if not success:
                     self.logger.error(f"Reply #{self.reply_count + 1} failed")
                 
-                # 等待指定时间，同时显示倒计时
-                self.countdown_wait(self.interval_seconds)
+                # 计算剩余时间
+                remaining_time = (max_end_time - datetime.now()).total_seconds()
+                if remaining_time <= self.interval_seconds:
+                    self.logger.info(f"Max runtime reached, stopping. Total replies: {self.reply_count}")
+                    break
                 
-        except KeyboardInterrupt:
-            self.logger.info(f"Received stop signal, total replies posted: {self.reply_count}")
-            print(f"\n🤖 Bot stopped! Total replies: {self.reply_count}")
+                # 等待指定时间
+                self.logger.info(f"Waiting {self.interval_seconds} seconds until next reply...")
+                time.sleep(self.interval_seconds)
+                
         except Exception as e:
             self.logger.error(f"Error during execution: {e}")
         finally:
             self.close()
-    
-    def countdown_wait(self, seconds):
-        """带倒计时的等待"""
-        for i in range(seconds, 0, -1):
-            next_reply_time = datetime.now() + timedelta(seconds=i-1)
-            self.display_stats(next_reply_time)
-            time.sleep(1)
+            self.logger.info(f"GitHub Actions bot finished. Total replies: {self.reply_count}")
     
     def close(self):
         """关闭浏览器"""
@@ -359,14 +298,13 @@ class TimedReplyBot:
 
 def main():
     """主函数"""
-    import os
-    
-    # 从环境变量或默认值获取配置
+    # 从环境变量获取配置
     target_url = os.getenv('TARGET_URL', "http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1")
     interval_seconds = int(os.getenv('INTERVAL_SECONDS', '15'))
+    max_runtime_hours = int(os.getenv('MAX_RUNTIME_HOURS', '1'))
     
-    # 创建定时回复机器人
-    bot = TimedReplyBot(target_url, interval_seconds=interval_seconds)
+    # 创建GitHub定时回复机器人
+    bot = GitHubTimedReplyBot(target_url, interval_seconds, max_runtime_hours)
     
     # 运行定时回复任务
     bot.run_timed_reply()

@@ -1,0 +1,91 @@
+name: Timed Reply Bot
+
+on:
+  # 手动触发
+  workflow_dispatch:
+    inputs:
+      interval_seconds:
+        description: '回复间隔（秒）'
+        required: false
+        default: '15'
+        type: string
+      target_url:
+        description: '目标帖子URL'
+        required: false
+        default: 'http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1'
+        type: string
+  
+  # 定时触发 - 每天运行
+  schedule:
+    - cron: '0 9 * * *'  # 每天上午9点运行
+  
+  # 推送代码时触发
+  push:
+    branches: [ main ]
+    paths: [ 'timed_reply.py', 'config.py' ]
+
+jobs:
+  timed-reply:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+      
+    - name: 设置Python环境
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.13'
+        
+    - name: 安装系统依赖
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wget gnupg
+        wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+        echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
+        
+    - name: 安装ChromeDriver
+      run: |
+        CHROME_VERSION=$(google-chrome --version | cut -d " " -f3 | cut -d "." -f1)
+        CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION}")
+        wget -O /tmp/chromedriver.zip "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
+        sudo unzip /tmp/chromedriver.zip -d /usr/local/bin/
+        sudo chmod +x /usr/local/bin/chromedriver
+        
+    - name: 安装Python依赖
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: 设置环境变量
+      run: |
+        echo "FORUM_URL=http://bbs.zelostech.com.cn" >> $GITHUB_ENV
+        echo "USERNAME=${{ secrets.FORUM_USERNAME }}" >> $GITHUB_ENV
+        echo "PASSWORD=${{ secrets.FORUM_PASSWORD }}" >> $GITHUB_ENV
+        echo "HEADLESS=true" >> $GITHUB_ENV
+        echo "USER_AGENT=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" >> $GITHUB_ENV
+        
+    - name: 运行定时回复脚本
+      run: |
+        python github_runner.py
+      env:
+        FORUM_URL: ${{ env.FORUM_URL }}
+        USERNAME: ${{ env.USERNAME }}
+        PASSWORD: ${{ env.PASSWORD }}
+        HEADLESS: ${{ env.HEADLESS }}
+        USER_AGENT: ${{ env.USER_AGENT }}
+        TARGET_URL: ${{ github.event.inputs.target_url || 'http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1' }}
+        INTERVAL_SECONDS: ${{ github.event.inputs.interval_seconds || '15' }}
+        MAX_RUNTIME_HOURS: '1'
+        
+    - name: 上传日志文件
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: timed-reply-logs
+        path: |
+          timed_reply.log
+          forum_automation.log
+        retention-days: 30
