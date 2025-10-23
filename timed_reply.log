@@ -1,0 +1,349 @@
+2025-10-23 10:31:50,964 - INFO - 开始定时回复任务
+2025-10-23 10:31:50,965 - INFO - 目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:31:50,965 - INFO - 回复间隔: 15秒
+2025-10-23 10:33:53,624 - INFO - 开始定时回复任务
+2025-10-23 10:33:53,625 - INFO - 目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:33:53,625 - INFO - 回复间隔: 15秒
+2025-10-23 10:34:23,034 - INFO - 开始定时回复任务
+2025-10-23 10:34:23,034 - INFO - 目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:34:23,044 - INFO - 回复间隔: 15秒
+2025-10-23 10:34:31,122 - WARNING - There was an error managing chromedriver (error sending request for url (https://storage.googleapis.com/chrome-for-testing-public/141.0.7390.122/win64/chromedriver-win64.zip)); using driver found in the cache
+2025-10-23 10:34:32,467 - INFO - 浏览器驱动初始化成功
+2025-10-23 10:34:32,468 - INFO - 访问登录页面: http://bbs.zelostech.com.cn/member.php?mod=logging&action=login
+2025-10-23 10:34:38,728 - INFO - 找到用户名输入框: name=username
+2025-10-23 10:34:38,739 - INFO - 找到密码输入框: name=password
+2025-10-23 10:34:38,739 - INFO - 输入用户名: yurisun
+2025-10-23 10:34:38,807 - INFO - 输入密码
+2025-10-23 10:34:38,986 - INFO - 已处理安全提问字段
+2025-10-23 10:34:38,997 - INFO - 找到登录按钮: name=loginsubmit
+2025-10-23 10:34:38,997 - INFO - 点击登录按钮
+2025-10-23 10:34:44,070 - INFO - 找到登录成功标识: 欢迎
+2025-10-23 10:34:44,070 - INFO - 登录成功
+2025-10-23 10:34:44,070 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:34:48,544 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:34:44
+2025-10-23 10:34:48,544 - INFO - 第 1 次回复成功
+2025-10-23 10:34:48,544 - INFO - 等待 15 秒...
+2025-10-23 10:35:03,545 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:35:07,790 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:35:03
+2025-10-23 10:35:07,790 - INFO - 第 2 次回复成功
+2025-10-23 10:35:07,790 - INFO - 等待 15 秒...
+2025-10-23 10:35:22,790 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:35:27,032 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:35:22
+2025-10-23 10:35:27,032 - INFO - 第 3 次回复成功
+2025-10-23 10:35:27,032 - INFO - 等待 15 秒...
+2025-10-23 10:35:42,033 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:35:46,276 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:35:42
+2025-10-23 10:35:46,276 - INFO - 第 4 次回复成功
+2025-10-23 10:35:46,276 - INFO - 等待 15 秒...
+2025-10-23 10:36:01,277 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:36:05,511 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:36:01
+2025-10-23 10:36:05,511 - INFO - 第 5 次回复成功
+2025-10-23 10:36:05,511 - INFO - 等待 15 秒...
+2025-10-23 10:36:20,512 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:36:24,766 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:36:20
+2025-10-23 10:36:24,767 - INFO - 第 6 次回复成功
+2025-10-23 10:36:24,767 - INFO - 等待 15 秒...
+2025-10-23 10:36:39,767 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:36:44,012 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:36:39
+2025-10-23 10:36:44,013 - INFO - 第 7 次回复成功
+2025-10-23 10:36:44,013 - INFO - 等待 15 秒...
+2025-10-23 10:36:51,245 - WARNING - There was an error managing chromedriver (error decoding response body); using driver found in the cache
+2025-10-23 10:36:52,466 - INFO - 浏览器驱动初始化成功
+2025-10-23 10:36:52,466 - INFO - 访问登录页面: http://bbs.zelostech.com.cn/member.php?mod=logging&action=login
+2025-10-23 10:36:58,645 - INFO - 找到用户名输入框: name=username
+2025-10-23 10:36:58,653 - INFO - 找到密码输入框: name=password
+2025-10-23 10:36:58,654 - INFO - 输入用户名: yurisun
+2025-10-23 10:36:58,704 - INFO - 输入密码
+2025-10-23 10:36:58,829 - INFO - 已处理安全提问字段
+2025-10-23 10:36:58,839 - INFO - 找到登录按钮: name=loginsubmit
+2025-10-23 10:36:58,839 - INFO - 点击登录按钮
+2025-10-23 10:36:59,013 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:37:03,296 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:36:59
+2025-10-23 10:37:03,296 - INFO - 第 8 次回复成功
+2025-10-23 10:37:03,296 - INFO - 等待 15 秒...
+2025-10-23 10:37:03,887 - INFO - 找到登录成功标识: 欢迎
+2025-10-23 10:37:03,887 - INFO - 登录成功
+2025-10-23 10:37:03,887 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:37:08,218 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:37:03
+2025-10-23 10:37:08,219 - INFO - 第 1 次回复成功
+2025-10-23 10:37:08,219 - INFO - 等待 15 秒...
+2025-10-23 10:37:18,297 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:37:22,555 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:37:18
+2025-10-23 10:37:22,555 - INFO - 第 9 次回复成功
+2025-10-23 10:37:22,555 - INFO - 等待 15 秒...
+2025-10-23 10:37:23,219 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:37:27,474 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:37:23
+2025-10-23 10:37:27,474 - INFO - 第 2 次回复成功
+2025-10-23 10:37:27,474 - INFO - 等待 15 秒...
+2025-10-23 10:37:37,556 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:37:41,811 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:37:37
+2025-10-23 10:37:41,812 - INFO - 第 10 次回复成功
+2025-10-23 10:37:41,812 - INFO - 等待 15 秒...
+2025-10-23 10:37:42,475 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:37:46,972 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:37:42
+2025-10-23 10:37:46,972 - INFO - 第 3 次回复成功
+2025-10-23 10:37:46,972 - INFO - 等待 15 秒...
+2025-10-23 10:37:56,813 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:38:01,125 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:37:56
+2025-10-23 10:38:01,126 - INFO - 第 11 次回复成功
+2025-10-23 10:38:01,126 - INFO - 等待 15 秒...
+2025-10-23 10:38:01,973 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:38:06,391 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:38:01
+2025-10-23 10:38:06,391 - INFO - 第 4 次回复成功
+2025-10-23 10:38:06,391 - INFO - 等待 15 秒...
+2025-10-23 10:38:16,126 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:38:20,391 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:38:16
+2025-10-23 10:38:20,392 - INFO - 第 12 次回复成功
+2025-10-23 10:38:20,392 - INFO - 等待 15 秒...
+2025-10-23 10:38:21,392 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:38:25,636 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:38:21
+2025-10-23 10:38:25,636 - INFO - 第 5 次回复成功
+2025-10-23 10:38:25,636 - INFO - 等待 15 秒...
+2025-10-23 10:38:35,393 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:38:39,635 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:38:35
+2025-10-23 10:38:39,635 - INFO - 第 13 次回复成功
+2025-10-23 10:38:39,635 - INFO - 等待 15 秒...
+2025-10-23 10:38:40,637 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:38:44,884 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:38:40
+2025-10-23 10:38:44,885 - INFO - 第 6 次回复成功
+2025-10-23 10:38:44,885 - INFO - 等待 15 秒...
+2025-10-23 10:38:54,636 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:38:59,027 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:38:54
+2025-10-23 10:38:59,027 - INFO - 第 14 次回复成功
+2025-10-23 10:38:59,027 - INFO - 等待 15 秒...
+2025-10-23 10:38:59,886 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:39:04,265 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:38:59
+2025-10-23 10:39:04,266 - INFO - 第 7 次回复成功
+2025-10-23 10:39:04,266 - INFO - 等待 15 秒...
+2025-10-23 10:39:14,028 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:39:18,458 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:39:14
+2025-10-23 10:39:18,458 - INFO - 第 15 次回复成功
+2025-10-23 10:39:18,458 - INFO - 等待 15 秒...
+2025-10-23 10:39:19,266 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:39:23,157 - WARNING - There was an error managing chromedriver (error decoding response body); using driver found in the cache
+2025-10-23 10:39:23,608 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:39:19
+2025-10-23 10:39:23,608 - INFO - 第 8 次回复成功
+2025-10-23 10:39:23,609 - INFO - 等待 15 秒...
+2025-10-23 10:39:24,381 - INFO - 浏览器驱动初始化成功
+2025-10-23 10:39:24,381 - INFO - 访问登录页面: http://bbs.zelostech.com.cn/member.php?mod=logging&action=login
+2025-10-23 10:39:30,631 - INFO - 找到用户名输入框: name=username
+2025-10-23 10:39:30,642 - INFO - 找到密码输入框: name=password
+2025-10-23 10:39:30,642 - INFO - 输入用户名: yurisun
+2025-10-23 10:39:30,741 - INFO - 输入密码
+2025-10-23 10:39:30,896 - INFO - 已处理安全提问字段
+2025-10-23 10:39:30,908 - INFO - 找到登录按钮: name=loginsubmit
+2025-10-23 10:39:30,908 - INFO - 点击登录按钮
+2025-10-23 10:39:33,458 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:39:35,976 - INFO - 找到登录成功标识: 欢迎
+2025-10-23 10:39:35,976 - INFO - 登录成功
+2025-10-23 10:39:35,977 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:39:37,717 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:39:33
+2025-10-23 10:39:37,717 - INFO - 第 16 次回复成功
+2025-10-23 10:39:37,717 - INFO - 等待 15 秒...
+2025-10-23 10:39:38,609 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:39:40,402 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:39:35
+2025-10-23 10:39:40,402 - INFO - 第 1 次回复成功
+2025-10-23 10:39:40,403 - INFO - 等待 15 秒...
+2025-10-23 10:39:42,892 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:39:38
+2025-10-23 10:39:42,892 - INFO - 第 9 次回复成功
+2025-10-23 10:39:42,892 - INFO - 等待 15 秒...
+2025-10-23 10:39:52,718 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:39:55,404 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:39:56,985 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:39:52
+2025-10-23 10:39:56,986 - INFO - 第 17 次回复成功
+2025-10-23 10:39:56,986 - INFO - 等待 15 秒...
+2025-10-23 10:39:57,893 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:39:59,714 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:39:55
+2025-10-23 10:39:59,714 - INFO - 第 2 次回复成功
+2025-10-23 10:39:59,715 - INFO - 等待 15 秒...
+2025-10-23 10:40:02,156 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:39:57
+2025-10-23 10:40:02,156 - INFO - 第 10 次回复成功
+2025-10-23 10:40:02,156 - INFO - 等待 15 秒...
+2025-10-23 10:40:11,987 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:40:14,716 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:40:16,235 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:40:11
+2025-10-23 10:40:16,235 - INFO - 第 18 次回复成功
+2025-10-23 10:40:16,235 - INFO - 等待 15 秒...
+2025-10-23 10:40:17,156 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:40:18,931 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:40:14
+2025-10-23 10:40:18,932 - INFO - 第 3 次回复成功
+2025-10-23 10:40:18,932 - INFO - 等待 15 秒...
+2025-10-23 10:40:21,384 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:40:17
+2025-10-23 10:40:21,384 - INFO - 第 11 次回复成功
+2025-10-23 10:40:21,384 - INFO - 等待 15 秒...
+2025-10-23 10:40:31,236 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:40:33,933 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:40:35,477 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:40:31
+2025-10-23 10:40:35,477 - INFO - 第 19 次回复成功
+2025-10-23 10:40:35,477 - INFO - 等待 15 秒...
+2025-10-23 10:40:36,384 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:40:38,163 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:40:33
+2025-10-23 10:40:38,163 - INFO - 第 4 次回复成功
+2025-10-23 10:40:38,163 - INFO - 等待 15 秒...
+2025-10-23 10:40:40,614 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:40:36
+2025-10-23 10:40:40,614 - INFO - 第 12 次回复成功
+2025-10-23 10:40:40,614 - INFO - 等待 15 秒...
+2025-10-23 10:40:50,478 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:40:53,164 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:40:54,749 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:40:50
+2025-10-23 10:40:54,749 - INFO - 第 20 次回复成功
+2025-10-23 10:40:54,749 - INFO - 等待 15 秒...
+2025-10-23 10:40:55,615 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:40:57,398 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:40:53
+2025-10-23 10:40:57,399 - INFO - 第 5 次回复成功
+2025-10-23 10:40:57,399 - INFO - 等待 15 秒...
+2025-10-23 10:40:59,849 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:40:55
+2025-10-23 10:40:59,849 - INFO - 第 13 次回复成功
+2025-10-23 10:40:59,849 - INFO - 等待 15 秒...
+2025-10-23 10:41:09,750 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:41:12,400 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:41:13,983 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:41:09
+2025-10-23 10:41:13,983 - INFO - 第 21 次回复成功
+2025-10-23 10:41:13,983 - INFO - 等待 15 秒...
+2025-10-23 10:41:14,850 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:41:16,682 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:41:12
+2025-10-23 10:41:16,682 - INFO - 第 6 次回复成功
+2025-10-23 10:41:16,682 - INFO - 等待 15 秒...
+2025-10-23 10:41:19,112 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:41:14
+2025-10-23 10:41:19,112 - INFO - 第 14 次回复成功
+2025-10-23 10:41:19,112 - INFO - 等待 15 秒...
+2025-10-23 10:41:28,984 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:41:31,683 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:41:33,262 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:41:28
+2025-10-23 10:41:33,263 - INFO - 第 22 次回复成功
+2025-10-23 10:41:33,263 - INFO - 等待 15 秒...
+2025-10-23 10:41:34,112 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:41:35,936 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:41:31
+2025-10-23 10:41:35,937 - INFO - 第 7 次回复成功
+2025-10-23 10:41:35,937 - INFO - 等待 15 秒...
+2025-10-23 10:41:38,381 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:41:34
+2025-10-23 10:41:38,381 - INFO - 第 15 次回复成功
+2025-10-23 10:41:38,381 - INFO - 等待 15 秒...
+2025-10-23 10:41:48,263 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:41:50,938 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:41:52,569 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:41:48
+2025-10-23 10:41:52,569 - INFO - 第 23 次回复成功
+2025-10-23 10:41:52,569 - INFO - 等待 15 秒...
+2025-10-23 10:41:53,382 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:41:55,167 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:41:50
+2025-10-23 10:41:55,168 - INFO - 第 8 次回复成功
+2025-10-23 10:41:55,168 - INFO - 等待 15 秒...
+2025-10-23 10:41:57,664 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:41:53
+2025-10-23 10:41:57,664 - INFO - 第 16 次回复成功
+2025-10-23 10:41:57,664 - INFO - 等待 15 秒...
+2025-10-23 10:42:07,570 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:42:10,169 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:42:11,793 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:42:07
+2025-10-23 10:42:11,793 - INFO - 第 24 次回复成功
+2025-10-23 10:42:11,793 - INFO - 等待 15 秒...
+2025-10-23 10:42:12,665 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:42:14,400 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:42:10
+2025-10-23 10:42:14,400 - INFO - 第 9 次回复成功
+2025-10-23 10:42:14,401 - INFO - 等待 15 秒...
+2025-10-23 10:42:16,907 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:42:12
+2025-10-23 10:42:16,907 - INFO - 第 17 次回复成功
+2025-10-23 10:42:16,907 - INFO - 等待 15 秒...
+2025-10-23 10:42:26,794 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:42:29,401 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:42:31,026 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:42:26
+2025-10-23 10:42:31,027 - INFO - 第 25 次回复成功
+2025-10-23 10:42:31,027 - INFO - 等待 15 秒...
+2025-10-23 10:42:31,908 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:42:33,642 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:42:29
+2025-10-23 10:42:33,642 - INFO - 第 10 次回复成功
+2025-10-23 10:42:33,642 - INFO - 等待 15 秒...
+2025-10-23 10:42:36,129 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:42:31
+2025-10-23 10:42:36,129 - INFO - 第 18 次回复成功
+2025-10-23 10:42:36,129 - INFO - 等待 15 秒...
+2025-10-23 10:42:46,027 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:42:46,563 - INFO - 收到停止信号，总共发布了 10 条回复
+2025-10-23 10:42:46,567 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None)': /session/544ab3b19e6ec3a1d7aa97dc540a59cb
+2025-10-23 10:42:50,289 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:42:46
+2025-10-23 10:42:50,289 - INFO - 第 26 次回复成功
+2025-10-23 10:42:50,289 - INFO - 等待 15 秒...
+2025-10-23 10:42:51,130 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:42:55,377 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:42:51
+2025-10-23 10:42:55,377 - INFO - 第 19 次回复成功
+2025-10-23 10:42:55,377 - INFO - 等待 15 秒...
+2025-10-23 10:43:05,289 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:43:09,560 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:43:05
+2025-10-23 10:43:09,561 - INFO - 第 27 次回复成功
+2025-10-23 10:43:09,561 - INFO - 等待 15 秒...
+2025-10-23 10:43:10,378 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:43:14,601 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:43:10
+2025-10-23 10:43:14,601 - INFO - 第 20 次回复成功
+2025-10-23 10:43:14,601 - INFO - 等待 15 秒...
+2025-10-23 10:43:15,881 - INFO - Starting timed reply task
+2025-10-23 10:43:15,882 - INFO - Target post: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:43:15,882 - INFO - Reply interval: 15 seconds
+2025-10-23 10:43:24,561 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:43:28,799 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:43:24
+2025-10-23 10:43:28,799 - INFO - 第 28 次回复成功
+2025-10-23 10:43:28,799 - INFO - 等待 15 秒...
+2025-10-23 10:43:29,601 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:43:33,842 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:43:29
+2025-10-23 10:43:33,842 - INFO - 第 21 次回复成功
+2025-10-23 10:43:33,842 - INFO - 等待 15 秒...
+2025-10-23 10:43:43,800 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:43:48,038 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:43:43
+2025-10-23 10:43:48,038 - INFO - 第 29 次回复成功
+2025-10-23 10:43:48,038 - INFO - 等待 15 秒...
+2025-10-23 10:43:48,843 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:43:53,072 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:43:48
+2025-10-23 10:43:53,072 - INFO - 第 22 次回复成功
+2025-10-23 10:43:53,072 - INFO - 等待 15 秒...
+2025-10-23 10:44:03,038 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:44:07,271 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:44:03
+2025-10-23 10:44:07,271 - INFO - 第 30 次回复成功
+2025-10-23 10:44:07,271 - INFO - 等待 15 秒...
+2025-10-23 10:44:08,072 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:44:12,380 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:44:08
+2025-10-23 10:44:12,380 - INFO - 第 23 次回复成功
+2025-10-23 10:44:12,380 - INFO - 等待 15 秒...
+2025-10-23 10:44:22,280 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:44:26,586 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:44:22
+2025-10-23 10:44:26,587 - INFO - 第 31 次回复成功
+2025-10-23 10:44:26,587 - INFO - 等待 15 秒...
+2025-10-23 10:44:27,381 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:44:31,613 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:44:27
+2025-10-23 10:44:31,613 - INFO - 第 24 次回复成功
+2025-10-23 10:44:31,613 - INFO - 等待 15 秒...
+2025-10-23 10:44:41,587 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:44:45,820 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:44:41
+2025-10-23 10:44:45,820 - INFO - 第 32 次回复成功
+2025-10-23 10:44:45,821 - INFO - 等待 15 秒...
+2025-10-23 10:44:46,614 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:44:50,895 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:44:46
+2025-10-23 10:44:50,895 - INFO - 第 25 次回复成功
+2025-10-23 10:44:50,896 - INFO - 等待 15 秒...
+2025-10-23 10:45:00,821 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:45:05,059 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:45:00
+2025-10-23 10:45:05,059 - INFO - 第 33 次回复成功
+2025-10-23 10:45:05,059 - INFO - 等待 15 秒...
+2025-10-23 10:45:05,896 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:45:10,110 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:45:05
+2025-10-23 10:45:10,110 - INFO - 第 26 次回复成功
+2025-10-23 10:45:10,110 - INFO - 等待 15 秒...
+2025-10-23 10:45:20,060 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:45:24,296 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:45:20
+2025-10-23 10:45:24,296 - INFO - 第 34 次回复成功
+2025-10-23 10:45:24,296 - INFO - 等待 15 秒...
+2025-10-23 10:45:25,111 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:45:29,361 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:45:25
+2025-10-23 10:45:29,361 - INFO - 第 27 次回复成功
+2025-10-23 10:45:29,361 - INFO - 等待 15 秒...
+2025-10-23 10:45:35,300 - INFO - Starting timed reply task
+2025-10-23 10:45:35,300 - INFO - Target post: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:45:35,300 - INFO - Reply interval: 15 seconds
+2025-10-23 10:45:39,297 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:45:43,543 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:45:39
+2025-10-23 10:45:43,543 - INFO - 第 35 次回复成功
+2025-10-23 10:45:43,544 - INFO - 等待 15 秒...
+2025-10-23 10:45:44,361 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:45:48,622 - INFO - 成功发布回复: 自动回复 - 时间戳: 2025-10-23 10:45:44
+2025-10-23 10:45:48,622 - INFO - 第 28 次回复成功
+2025-10-23 10:45:48,622 - INFO - 等待 15 秒...
+2025-10-23 10:45:50,902 - INFO - Starting timed reply task
+2025-10-23 10:45:50,903 - INFO - Target post: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1
+2025-10-23 10:45:50,903 - INFO - Reply interval: 15 seconds
+2025-10-23 10:45:58,544 - INFO - 访问目标帖子: http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1

@@ -1,0 +1,13 @@
+{
+  "install": "pip install -r requirements.txt",
+  "terminals": [
+    {
+      "name": "论坛自动化服务",
+      "command": "python main.py"
+    },
+    {
+      "name": "定时任务调度",
+      "command": "python scheduler.py"
+    }
+  ]
+}

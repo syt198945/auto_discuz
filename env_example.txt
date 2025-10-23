@@ -1,0 +1,26 @@
+# Discuz 论坛自动化配置示例
+# 复制此文件为 .env 并填写实际配置
+
+# 论坛基本信息
+FORUM_URL=https://your-forum.com
+FORUM_NAME=Discuz论坛
+
+# 登录信息
+USERNAME=your_username
+PASSWORD=your_password
+
+# 自动化设置
+AUTO_REPLY_ENABLED=true
+AUTO_CREATE_TOPIC_ENABLED=true
+
+# 定时任务设置
+REPLY_CHECK_INTERVAL=300
+TOPIC_CREATE_SCHEDULE=09:00,15:00,21:00
+
+# 浏览器设置
+HEADLESS=true
+USER_AGENT=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+
+# 日志设置
+LOG_LEVEL=INFO
+LOG_FILE=forum_automation.log
