@@ -9,6 +9,18 @@ FORUM_NAME=Discuz论坛
 USERNAME=your_username
 PASSWORD=your_password
 
+# 登录方式选择 (feishu 或 password)
+LOGIN_METHOD=feishu
+
+# 飞书登录配置
+FEISHU_LOGIN_ENABLED=true
+FEISHU_LOGIN_URL=/plugin.php?id=feishulogin:login
+
+# 飞书API配置（需要先在飞书开放平台创建应用）
+FEISHU_APP_ID=your_feishu_app_id
+FEISHU_APP_SECRET=your_feishu_app_secret
+FEISHU_REDIRECT_URI=/plugin.php?id=feishulogin:callback&action=login
+
 # 自动化设置
 AUTO_REPLY_ENABLED=true
 AUTO_CREATE_TOPIC_ENABLED=true

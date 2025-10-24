@@ -1,10 +1,13 @@
 """
-定时回复脚本 - 每隔15秒向指定帖子发布带时间戳的消息
+多账户定时回复脚本 - 支持多个账户对多个链接进行定时回复
 """
 import time
 import logging
 import os
 import sys
+import json
+import threading
+import random
 from datetime import datetime, timedelta
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -12,70 +15,118 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
-from config import Config
+
+class ConfigManager:
+    """配置文件管理器"""
+    def __init__(self, config_file='config.json'):
+        self.config_file = config_file
+        self.config = self.load_config()
+    
+    def load_config(self):
+        """加载配置文件"""
+        try:
+            with open(self.config_file, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except FileNotFoundError:
+            print(f"配置文件 {self.config_file} 不存在，请先创建配置文件")
+            sys.exit(1)
+        except json.JSONDecodeError as e:
+            print(f"配置文件格式错误: {e}")
+            sys.exit(1)
+    
+    def get_enabled_accounts(self):
+        """获取启用的账户列表"""
+        return [account for account in self.config['accounts'] if account.get('enabled', True)]
+    
+    def get_enabled_targets(self, account):
+        """获取账户下启用的回复目标列表"""
+        return [target for target in account.get('reply_targets', []) if target.get('enabled', True)]
 
 class TimedReplyBot:
-    def __init__(self, target_url, interval_seconds=15):
+    def __init__(self, config_manager):
         """
         初始化定时回复机器人
         
         Args:
-            target_url: 目标帖子URL
-            interval_seconds: 回复间隔（秒），默认15秒
+            config_manager: 配置管理器实例
         """
-        self.config = Config()
-        self.target_url = target_url
-        self.interval_seconds = interval_seconds
-        self.driver = None
-        self.reply_count = 0
-        self.start_time = None
-        self.last_reply_time = None
+        self.config_manager = config_manager
+        self.config = config_manager.config
+        self.drivers = {}  # 存储每个账户的浏览器驱动
+        self.reply_stats = {}  # 存储每个账户的回复统计
+        self.running = False
+        self.threads = []
         self.setup_logging()
     
     def setup_logging(self):
         """设置日志"""
+        log_config = self.config.get('logging', {})
+        log_level = getattr(logging, log_config.get('level', 'INFO').upper())
+        
+        # 创建日志格式
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        
+        # 文件处理器
+        file_handler = logging.FileHandler(
+            log_config.get('file', 'timed_reply.log'), 
+            encoding='utf-8'
+        )
+        file_handler.setFormatter(formatter)
+        
+        # 控制台处理器
+        console_handler = logging.StreamHandler()
+        console_handler.setFormatter(formatter)
+        
+        # 配置根日志器
         logging.basicConfig(
-            level=logging.INFO,
-            format='%(asctime)s - %(levelname)s - %(message)s',
-            handlers=[
-                logging.FileHandler('timed_reply.log', encoding='utf-8'),
-                logging.StreamHandler()
-            ]
+            level=log_level,
+            handlers=[file_handler, console_handler]
         )
         self.logger = logging.getLogger(__name__)
     
-    def init_driver(self):
-        """初始化浏览器驱动"""
+    def init_driver(self, account_id):
+        """为指定账户初始化浏览器驱动"""
+        browser_config = self.config.get('browser', {})
         chrome_options = Options()
-        if self.config.HEADLESS:
+        
+        if browser_config.get('headless', True):
             chrome_options.add_argument('--headless')
-        chrome_options.add_argument(f'--user-agent={self.config.USER_AGENT}')
+        
+        chrome_options.add_argument(f'--user-agent={browser_config.get("user_agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")}')
         chrome_options.add_argument('--no-sandbox')
         chrome_options.add_argument('--disable-dev-shm-usage')
         chrome_options.add_argument('--disable-gpu')
-        chrome_options.add_argument('--window-size=1920,1080')
+        chrome_options.add_argument(f'--window-size={browser_config.get("window_size", "1920,1080")}')
         
         try:
-            self.driver = webdriver.Chrome(options=chrome_options)
-            self.logger.info("Browser driver initialized successfully")
+            driver = webdriver.Chrome(options=chrome_options)
+            self.drivers[account_id] = driver
+            self.logger.info(f"账户 {account_id} 浏览器驱动初始化成功")
             return True
         except Exception as e:
-            self.logger.error(f"Failed to initialize browser driver: {e}")
+            self.logger.error(f"账户 {account_id} 浏览器驱动初始化失败: {e}")
             return False
     
-    def login(self):
-        """登录论坛"""
-        if not self.driver:
-            if not self.init_driver():
+    def login(self, account):
+        """登录指定账户"""
+        account_id = account['id']
+        username = account['username']
+        password = account['password']
+        
+        if account_id not in self.drivers:
+            if not self.init_driver(account_id):
                 return False
         
+        driver = self.drivers[account_id]
+        forum_url = self.config['forum']['base_url']
+        
         try:
-            self.logger.info(f"Accessing login page: {self.config.FORUM_URL}/member.php?mod=logging&action=login")
-            self.driver.get(f"{self.config.FORUM_URL}/member.php?mod=logging&action=login")
+            self.logger.info(f"账户 {account_id} 开始登录: {username}")
+            driver.get(f"{forum_url}/member.php?mod=logging&action=login")
             time.sleep(3)
             
             # 等待登录表单加载
-            wait = WebDriverWait(self.driver, 10)
+            wait = WebDriverWait(driver, 10)
             
             # 查找用户名输入框
             username_input = None
@@ -89,13 +140,13 @@ class TimedReplyBot:
             for selector_type, selector_value in username_selectors:
                 try:
                     username_input = wait.until(EC.presence_of_element_located((selector_type, selector_value)))
-                    self.logger.info(f"Found username input: {selector_type}={selector_value}")
+                    self.logger.info(f"账户 {account_id} 找到用户名输入框: {selector_type}={selector_value}")
                     break
                 except TimeoutException:
                     continue
             
             if not username_input:
-                self.logger.error("Username input not found")
+                self.logger.error(f"账户 {account_id} 未找到用户名输入框")
                 return False
             
             # 查找密码输入框
@@ -109,24 +160,24 @@ class TimedReplyBot:
             
             for selector_type, selector_value in password_selectors:
                 try:
-                    password_input = self.driver.find_element(selector_type, selector_value)
-                    self.logger.info(f"Found password input: {selector_type}={selector_value}")
+                    password_input = driver.find_element(selector_type, selector_value)
+                    self.logger.info(f"账户 {account_id} 找到密码输入框: {selector_type}={selector_value}")
                     break
                 except NoSuchElementException:
                     continue
             
             if not password_input:
-                self.logger.error("Password input not found")
+                self.logger.error(f"账户 {account_id} 未找到密码输入框")
                 return False
             
             # 输入用户名和密码
-            self.logger.info(f"Entering username: {self.config.USERNAME}")
+            self.logger.info(f"账户 {account_id} 输入用户名: {username}")
             username_input.clear()
-            username_input.send_keys(self.config.USERNAME)
+            username_input.send_keys(username)
             
-            self.logger.info("Entering password")
+            self.logger.info(f"账户 {account_id} 输入密码")
             password_input.clear()
-            password_input.send_keys(self.config.PASSWORD)
+            password_input.send_keys(password)
             
             # 处理安全提问字段（如果存在）
             try:
@@ -138,17 +189,17 @@ class TimedReplyBot:
                 
                 for selector_type, selector_value in security_selectors:
                     try:
-                        security_element = self.driver.find_element(selector_type, selector_value)
+                        security_element = driver.find_element(selector_type, selector_value)
                         from selenium.webdriver.support.ui import Select
                         select = Select(security_element)
                         if len(select.options) > 0:
                             select.select_by_index(0)
-                            self.logger.info("Security question field handled")
+                            self.logger.info(f"账户 {account_id} 处理安全提问字段")
                         break
                     except:
                         continue
             except Exception as e:
-                self.logger.debug(f"Security question field handling: {e}")
+                self.logger.debug(f"账户 {account_id} 安全提问字段处理: {e}")
             
             # 查找登录按钮
             login_button = None
@@ -161,212 +212,328 @@ class TimedReplyBot:
             
             for selector_type, selector_value in button_selectors:
                 try:
-                    login_button = self.driver.find_element(selector_type, selector_value)
-                    self.logger.info(f"Found login button: {selector_type}={selector_value}")
+                    login_button = driver.find_element(selector_type, selector_value)
+                    self.logger.info(f"账户 {account_id} 找到登录按钮: {selector_type}={selector_value}")
                     break
                 except NoSuchElementException:
                     continue
             
             if not login_button:
-                self.logger.error("Login button not found")
+                self.logger.error(f"账户 {account_id} 未找到登录按钮")
                 return False
             
             # 点击登录按钮
-            self.logger.info("Clicking login button")
+            self.logger.info(f"账户 {account_id} 点击登录按钮")
             login_button.click()
             
             # 等待登录完成
             time.sleep(5)
             
             # 检查是否登录成功
-            page_source = self.driver.page_source
+            page_source = driver.page_source
             success_indicators = [
                 "欢迎",
                 "退出", 
                 "logout",
                 "个人中心",
                 "我的",
-                self.config.USERNAME
+                username
             ]
             
             login_success = False
             for indicator in success_indicators:
                 if indicator in page_source:
-                    self.logger.info(f"Found login success indicator: {indicator}")
+                    self.logger.info(f"账户 {account_id} 登录成功，找到指示器: {indicator}")
                     login_success = True
                     break
             
             if not login_success:
-                self.logger.error("Login failed")
+                self.logger.error(f"账户 {account_id} 登录失败")
                 return False
             else:
-                self.logger.info("Login successful")
+                self.logger.info(f"账户 {account_id} 登录成功")
                 return True
                 
         except Exception as e:
-            self.logger.error(f"Login process error: {e}")
+            self.logger.error(f"账户 {account_id} 登录过程错误: {e}")
             return False
     
-    def get_timestamp_message(self):
-        """生成带时间戳的消息"""
-        now = datetime.now()
-        timestamp = now.strftime("%Y-%m-%d %H:%M:%S")
-        message = f"Auto reply - Timestamp: {timestamp}"
+    def get_reply_message(self, target):
+        """生成回复消息（随机选择模板）"""
+        templates = target.get('reply_templates', [])
+        if not templates:
+            return f"我在认真的水帖, - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        
+        # 随机选择一个模板
+        template = random.choice(templates)
+        
+        # 处理模板格式（支持新旧格式）
+        if isinstance(template, dict):
+            content = template.get('content', '')
+        else:
+            content = template
+        
+        # 替换时间戳占位符
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        message = content.replace('{timestamp}', timestamp)
+        
         return message
     
-    def display_stats(self, next_reply_time=None):
-        """显示统计信息"""
-        if self.start_time is None:
-            self.start_time = datetime.now()
-        
-        current_time = datetime.now()
-        runtime = current_time - self.start_time
-        
-        # 计算运行时间
-        hours, remainder = divmod(runtime.total_seconds(), 3600)
-        minutes, seconds = divmod(remainder, 60)
-        
-        # 计算平均回复间隔
-        avg_interval = 0
-        if self.reply_count > 0:
-            avg_interval = runtime.total_seconds() / self.reply_count
-        
-        # 清屏并显示统计信息
-        os.system('cls' if os.name == 'nt' else 'clear')
-        
-        print("=" * 80)
-        print("🤖 TIMED REPLY BOT - STATISTICS")
-        print("=" * 80)
-        print(f"📊 Target Post: {self.target_url}")
-        print(f"⏱️  Reply Interval: {self.interval_seconds} seconds")
-        print(f"📈 Total Replies: {self.reply_count}")
-        print(f"⏰ Runtime: {int(hours):02d}:{int(minutes):02d}:{int(seconds):02d}")
-        print(f"📊 Average Interval: {avg_interval:.1f} seconds")
-        
-        if self.last_reply_time:
-            print(f"🕐 Last Reply: {self.last_reply_time.strftime('%Y-%m-%d %H:%M:%S')}")
-        
-        if next_reply_time:
-            print(f"⏳ Next Reply: {next_reply_time.strftime('%Y-%m-%d %H:%M:%S')}")
-            remaining = (next_reply_time - current_time).total_seconds()
-            print(f"⏱️  Time Remaining: {remaining:.0f} seconds")
-        
-        print("=" * 80)
-        print("Press Ctrl+C to stop the bot")
-        print("=" * 80)
     
-    def post_reply(self, message):
+    def post_reply(self, account_id, target):
         """发布回复"""
+        driver = self.drivers.get(account_id)
+        if not driver:
+            self.logger.error(f"账户 {account_id} 浏览器驱动不存在")
+            return False
+        
         try:
             # 访问目标帖子
-            self.logger.info(f"访问目标帖子: {self.target_url}")
-            self.driver.get(self.target_url)
+            self.logger.info(f"账户 {account_id} 访问目标帖子: {target['url']}")
+            driver.get(target['url'])
             time.sleep(2)
+            
+            # 生成回复消息
+            message = self.get_reply_message(target)
             
             # 查找快速回复框
             try:
-                reply_textarea = self.driver.find_element(By.ID, "fastpostmessage")
+                reply_textarea = driver.find_element(By.ID, "fastpostmessage")
                 reply_textarea.clear()
                 reply_textarea.send_keys(message)
                 
                 # 点击快速回复按钮
-                reply_button = self.driver.find_element(By.ID, "fastpostsubmit")
+                reply_button = driver.find_element(By.ID, "fastpostsubmit")
                 reply_button.click()
                 
                 time.sleep(2)
-                self.reply_count += 1
-                self.last_reply_time = datetime.now()
-                self.logger.info(f"Successfully posted reply #{self.reply_count}: {message}")
+                
+                # 更新统计信息
+                if account_id not in self.reply_stats:
+                    self.reply_stats[account_id] = {
+                        'total_replies': 0,
+                        'last_reply_time': None,
+                        'start_time': datetime.now()
+                    }
+                
+                self.reply_stats[account_id]['total_replies'] += 1
+                self.reply_stats[account_id]['last_reply_time'] = datetime.now()
+                
+                self.logger.info(f"账户 {account_id} 成功发布回复 #{self.reply_stats[account_id]['total_replies']}: {message}")
                 return True
                 
             except NoSuchElementException:
-                self.logger.warning("未找到快速回复框，尝试其他方式")
+                self.logger.warning(f"账户 {account_id} 未找到快速回复框，尝试其他方式")
                 # 尝试查找其他可能的回复框
                 try:
                     # 尝试查找普通回复框
-                    reply_textarea = self.driver.find_element(By.CSS_SELECTOR, "textarea[name='message']")
+                    reply_textarea = driver.find_element(By.CSS_SELECTOR, "textarea[name='message']")
                     reply_textarea.clear()
                     reply_textarea.send_keys(message)
                     
                     # 查找提交按钮
-                    submit_button = self.driver.find_element(By.CSS_SELECTOR, "button[type='submit']")
+                    submit_button = driver.find_element(By.CSS_SELECTOR, "button[type='submit']")
                     submit_button.click()
                     
                     time.sleep(2)
-                    self.reply_count += 1
-                    self.last_reply_time = datetime.now()
-                    self.logger.info(f"Successfully posted reply #{self.reply_count} (alternative method): {message}")
+                    
+                    # 更新统计信息
+                    if account_id not in self.reply_stats:
+                        self.reply_stats[account_id] = {
+                            'total_replies': 0,
+                            'last_reply_time': None,
+                            'start_time': datetime.now()
+                        }
+                    
+                    self.reply_stats[account_id]['total_replies'] += 1
+                    self.reply_stats[account_id]['last_reply_time'] = datetime.now()
+                    
+                    self.logger.info(f"账户 {account_id} 成功发布回复 #{self.reply_stats[account_id]['total_replies']} (备用方法): {message}")
                     return True
                     
                 except NoSuchElementException:
-                    self.logger.error("No reply box found")
+                    self.logger.error(f"账户 {account_id} 未找到回复框")
                     return False
                 
         except Exception as e:
-            self.logger.error(f"Failed to post reply: {e}")
+            self.logger.error(f"账户 {account_id} 发布回复失败: {e}")
             return False
     
-    def run_timed_reply(self):
-        """运行定时回复任务"""
-        self.logger.info("Starting timed reply task")
-        self.logger.info(f"Target post: {self.target_url}")
-        self.logger.info(f"Reply interval: {self.interval_seconds} seconds")
+    def display_stats(self):
+        """显示统计信息"""
+        os.system('cls' if os.name == 'nt' else 'clear')
         
-        # 登录
-        if not self.login():
-            self.logger.error("Login failed, cannot continue")
+        print("=" * 120)
+        print("🤖 多账户定时回复机器人 - 统计信息")
+        print("=" * 120)
+        
+        for account in self.config_manager.get_enabled_accounts():
+            account_id = account['id']
+            username = account['username']
+            stats = self.reply_stats.get(account_id, {})
+            
+            print(f"\n👤 账户: {username} ({account_id})")
+            print(f"📊 总回复数: {stats.get('total_replies', 0)}")
+            
+            if stats.get('last_reply_time'):
+                print(f"🕐 最后回复: {stats['last_reply_time'].strftime('%Y-%m-%d %H:%M:%S')}")
+            
+            # 显示该账户的回复目标
+            targets = self.config_manager.get_enabled_targets(account)
+            for target in targets:
+                print(f"\n  📌 {target['name']}")
+                print(f"     🔗 链接: {target['url']}")
+                print(f"     ⏱️  间隔: {target['interval_seconds']}秒")
+                
+                # 显示开始延迟
+                start_delay = target.get('start_delay_seconds', 0)
+                if start_delay > 0:
+                    print(f"     ⏳ 开始延迟: {start_delay}秒")
+                else:
+                    print(f"     ⏳ 开始延迟: 立即开始")
+                
+                # 显示模板概要
+                templates = target.get('reply_templates', [])
+                print(f"     📝 模板概要 ({len(templates)}个，随机选择):")
+                
+                for i, template in enumerate(templates):
+                    # 处理模板格式
+                    if isinstance(template, dict):
+                        content = template.get('content', '')
+                    else:
+                        content = template
+                    
+                    # 截断过长的内容
+                    display_content = content[:50] + "..." if len(content) > 50 else content
+                    print(f"       {i+1}. {display_content}")
+        
+        print("\n" + "=" * 120)
+        print("按 Ctrl+C 停止机器人")
+        print("=" * 120)
+    
+    def run_account_target(self, account, target):
+        """运行单个账户的单个目标"""
+        account_id = account['id']
+        target_id = target['id']
+        interval_seconds = target['interval_seconds']
+        start_delay = target.get('start_delay_seconds', 0)
+        
+        self.logger.info(f"启动账户 {account_id} 的目标 {target_id}，间隔 {interval_seconds} 秒，延迟 {start_delay} 秒")
+        
+        # 登录账户
+        if not self.login(account):
+            self.logger.error(f"账户 {account_id} 登录失败，跳过目标 {target_id}")
             return
         
-        try:
-            while True:
-                # 计算下一次回复时间
-                next_reply_time = datetime.now() + timedelta(seconds=self.interval_seconds)
-                
-                # 显示统计信息
-                self.display_stats(next_reply_time)
-                
-                # 生成带时间戳的消息
-                message = self.get_timestamp_message()
-                
+        # 开始延迟
+        if start_delay > 0:
+            self.logger.info(f"账户 {account_id} 目标 {target_id} 延迟 {start_delay} 秒后开始")
+            for i in range(start_delay, 0, -1):
+                if not self.running:
+                    return
+                time.sleep(1)
+                if i % 10 == 0:  # 每10秒显示一次统计
+                    self.display_stats()
+        
+        while self.running:
+            try:
                 # 发布回复
-                success = self.post_reply(message)
+                success = self.post_reply(account_id, target)
                 if not success:
-                    self.logger.error(f"Reply #{self.reply_count + 1} failed")
+                    self.logger.error(f"账户 {account_id} 目标 {target_id} 回复失败")
                 
-                # 等待指定时间，同时显示倒计时
-                self.countdown_wait(self.interval_seconds)
+                # 等待指定时间
+                for i in range(interval_seconds, 0, -1):
+                    if not self.running:
+                        break
+                    time.sleep(1)
+                    
+                    # 每10秒显示一次统计信息
+                    if i % 10 == 0:
+                        self.display_stats()
+                
+            except Exception as e:
+                self.logger.error(f"账户 {account_id} 目标 {target_id} 运行错误: {e}")
+                time.sleep(30)  # 出错后等待30秒再重试
+    
+    def run_timed_reply(self):
+        """运行多账户定时回复任务"""
+        self.logger.info("启动多账户定时回复任务")
+        self.running = True
+        
+        # 获取启用的账户
+        enabled_accounts = self.config_manager.get_enabled_accounts()
+        if not enabled_accounts:
+            self.logger.error("没有启用的账户")
+            return
+        
+        self.logger.info(f"找到 {len(enabled_accounts)} 个启用的账户")
+        
+        # 为每个账户的每个目标创建线程
+        for account in enabled_accounts:
+            account_id = account['id']
+            username = account['username']
+            
+            # 获取该账户启用的目标
+            enabled_targets = self.config_manager.get_enabled_targets(account)
+            if not enabled_targets:
+                self.logger.warning(f"账户 {username} 没有启用的回复目标")
+                continue
+            
+            self.logger.info(f"账户 {username} 有 {len(enabled_targets)} 个启用的回复目标")
+            
+            # 为每个目标创建线程
+            for target in enabled_targets:
+                thread = threading.Thread(
+                    target=self.run_account_target,
+                    args=(account, target),
+                    name=f"{account_id}_{target['id']}"
+                )
+                thread.daemon = True
+                thread.start()
+                self.threads.append(thread)
+        
+        try:
+            # 主循环显示统计信息
+            while self.running:
+                self.display_stats()
+                time.sleep(10)
                 
         except KeyboardInterrupt:
-            self.logger.info(f"Received stop signal, total replies posted: {self.reply_count}")
-            print(f"\n🤖 Bot stopped! Total replies: {self.reply_count}")
-        except Exception as e:
-            self.logger.error(f"Error during execution: {e}")
+            self.logger.info("收到停止信号")
+            self.running = False
+            
+            # 等待所有线程结束
+            for thread in self.threads:
+                thread.join(timeout=5)
+            
+            # 显示最终统计
+            print("\n🤖 机器人已停止！")
+            for account in enabled_accounts:
+                account_id = account['id']
+                username = account['username']
+                stats = self.reply_stats.get(account_id, {})
+                print(f"账户 {username}: 总回复数 {stats.get('total_replies', 0)}")
+        
         finally:
-            self.close()
+            self.close_all_drivers()
     
-    def countdown_wait(self, seconds):
-        """带倒计时的等待"""
-        for i in range(seconds, 0, -1):
-            next_reply_time = datetime.now() + timedelta(seconds=i-1)
-            self.display_stats(next_reply_time)
-            time.sleep(1)
-    
-    def close(self):
-        """关闭浏览器"""
-        if self.driver:
-            self.driver.quit()
-            self.logger.info("Browser closed")
+    def close_all_drivers(self):
+        """关闭所有浏览器驱动"""
+        for account_id, driver in self.drivers.items():
+            try:
+                driver.quit()
+                self.logger.info(f"账户 {account_id} 浏览器已关闭")
+            except Exception as e:
+                self.logger.error(f"关闭账户 {account_id} 浏览器时出错: {e}")
 
 def main():
     """主函数"""
-    import os
-    
-    # 从环境变量或默认值获取配置
-    target_url = os.getenv('TARGET_URL', "http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1")
-    interval_seconds = int(os.getenv('INTERVAL_SECONDS', '15'))
+    # 创建配置管理器
+    config_manager = ConfigManager('config.json')
     
     # 创建定时回复机器人
-    bot = TimedReplyBot(target_url, interval_seconds=interval_seconds)
+    bot = TimedReplyBot(config_manager)
     
     # 运行定时回复任务
     bot.run_timed_reply()

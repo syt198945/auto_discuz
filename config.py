@@ -12,8 +12,20 @@ class Config:
     FORUM_NAME = os.getenv('FORUM_NAME', 'ZelosTech论坛')
     
     # 登录信息
-    USERNAME = os.getenv('FORUM_USERNAME', 'yurisun')
-    PASSWORD = os.getenv('FORUM_PASSWORD', 'sunyuting0')
+    USERNAME = os.getenv('FORUM_USERNAME', '孙玉铤')
+    PASSWORD = os.getenv('FORUM_PASSWORD', 'zaq1@WSX')
+    
+    # 登录方式选择
+    LOGIN_METHOD = os.getenv('LOGIN_METHOD', 'feishu')  # 'feishu' 或 'password'
+    
+    # 飞书登录配置
+    FEISHU_LOGIN_ENABLED = os.getenv('FEISHU_LOGIN_ENABLED', 'true').lower() == 'true'
+    FEISHU_LOGIN_URL = os.getenv('FEISHU_LOGIN_URL', '/plugin.php?id=feishulogin:login')
+    
+    # 飞书API配置
+    FEISHU_APP_ID = os.getenv('FEISHU_APP_ID', '')
+    FEISHU_APP_SECRET = os.getenv('FEISHU_APP_SECRET', '')
+    FEISHU_REDIRECT_URI = os.getenv('FEISHU_REDIRECT_URI', '/plugin.php?id=feishulogin:callback&action=login')
     
     # 自动化设置
     AUTO_REPLY_ENABLED = os.getenv('AUTO_REPLY_ENABLED', 'true').lower() == 'true'

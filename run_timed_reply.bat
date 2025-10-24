@@ -1,16 +1,16 @@
 @echo off
 echo ========================================
-echo 🤖 TIMED REPLY BOT
+echo 🤖 多账户定时回复机器人
 echo ========================================
-echo Target Post: http://bbs.zelostech.com.cn/forum.php?mod=viewthread^&tid=37^&extra=page%%3D1
-echo Reply Interval: 15 seconds
-echo Features: Dynamic stats, countdown timer
-echo Press Ctrl+C to stop the bot
+echo 功能: 支持多个账户对多个链接进行定时回复
+echo 配置: config.json
+echo 特性: 多账户并发、多链接支持、模板轮换
+echo 按 Ctrl+C 停止机器人
 echo ========================================
 echo.
 
 py -3.13 timed_reply.py
 
 echo.
-echo Bot has stopped. Press any key to exit...
+echo 机器人已停止。按任意键退出...
 pause

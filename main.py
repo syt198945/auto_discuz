@@ -1,63 +1,59 @@
 """
-论坛自动化主程序
+多账户定时回复机器人主程序
 """
 import argparse
 import logging
-from discuz_automation import DiscuzAutomation
-from config import Config
+import os
+import sys
+from timed_reply import TimedReplyBot, ConfigManager
 
 def main():
-    parser = argparse.ArgumentParser(description='Discuz 论坛自动化工具')
-    parser.add_argument('--mode', choices=['reply', 'create', 'both'], default='both',
-                       help='运行模式: reply(仅回复), create(仅创建), both(两者都执行)')
+    parser = argparse.ArgumentParser(description='多账户定时回复机器人')
+    parser.add_argument('--config', default='config.json', help='配置文件路径 (默认: config.json)')
     parser.add_argument('--once', action='store_true', help='只执行一次，不持续运行')
     
     args = parser.parse_args()
     
-    # 设置日志
-    config = Config()
-    logging.basicConfig(
-        level=getattr(logging, config.LOG_LEVEL),
-        format='%(asctime)s - %(levelname)s - %(message)s',
-        handlers=[
-            logging.FileHandler(config.LOG_FILE, encoding='utf-8'),
-            logging.StreamHandler()
-        ]
-    )
-    logger = logging.getLogger(__name__)
-    
-    # 创建自动化实例
-    automation = DiscuzAutomation()
+    # 检查配置文件是否存在
+    if not os.path.exists(args.config):
+        print(f"错误: 配置文件 {args.config} 不存在")
+        print(f"请复制 config_example.json 为 {args.config} 并修改配置")
+        sys.exit(1)
     
     try:
-        logger.info("论坛自动化工具启动")
-        logger.info(f"运行模式: {args.mode}")
+        # 创建配置管理器
+        config_manager = ConfigManager(args.config)
         
-        if args.mode in ['reply', 'both']:
-            logger.info("开始自动回复任务")
-            automation.run_auto_reply()
+        # 创建定时回复机器人
+        bot = TimedReplyBot(config_manager)
         
-        if args.mode in ['create', 'both']:
-            logger.info("开始自动创建主题任务")
-            automation.run_auto_create_topic()
+        print("🤖 多账户定时回复机器人启动")
+        print(f"📁 配置文件: {args.config}")
         
-        if not args.once:
-            logger.info("进入持续运行模式，按 Ctrl+C 停止")
-            import time
-            while True:
-                time.sleep(60)
-                if args.mode in ['reply', 'both']:
-                    automation.run_auto_reply()
-                if args.mode in ['create', 'both']:
-                    automation.run_auto_create_topic()
+        # 显示配置信息
+        enabled_accounts = config_manager.get_enabled_accounts()
+        print(f"👥 启用的账户数: {len(enabled_accounts)}")
+        
+        total_targets = 0
+        for account in enabled_accounts:
+            targets = config_manager.get_enabled_targets(account)
+            total_targets += len(targets)
+            print(f"  - {account['username']}: {len(targets)} 个回复目标")
+        
+        print(f"🎯 总回复目标数: {total_targets}")
+        print("按 Ctrl+C 停止机器人")
+        print("=" * 50)
+        
+        # 运行定时回复任务
+        bot.run_timed_reply()
     
     except KeyboardInterrupt:
-        logger.info("收到停止信号，正在关闭...")
+        print("\n🤖 收到停止信号，正在关闭...")
     except Exception as e:
-        logger.error(f"程序运行出错: {e}")
+        print(f"❌ 程序运行出错: {e}")
+        logging.error(f"程序运行出错: {e}")
     finally:
-        automation.close()
-        logger.info("程序已关闭")
+        print("🤖 程序已关闭")
 
 if __name__ == "__main__":
     main()

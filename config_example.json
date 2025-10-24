@@ -1,0 +1,73 @@
+{
+  "forum": {
+    "base_url": "http://bbs.zelostech.com.cn",
+    "name": "ZelosTech论坛"
+  },
+  "accounts": [
+    {
+      "id": "account_1",
+      "username": "你的用户名1",
+      "password": "你的密码1",
+      "login_method": "password",
+      "enabled": true,
+      "reply_targets": [
+        {
+          "id": "target_1",
+          "url": "http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37&extra=page%3D1",
+          "name": "技术讨论帖",
+          "enabled": true,
+          "interval_seconds": 3600,
+          "start_delay_seconds": 0,
+          "reply_templates": [
+            "我在认真的水帖, - {timestamp}",
+            "感谢分享，很有用的技术信息！ - {timestamp}",
+            "学习了，谢谢楼主的分享！ - {timestamp}",
+            "这个技术方案很有意思，我也有类似的经验。 - {timestamp}",
+            "支持楼主，期待更多技术干货！ - {timestamp}"
+          ],
+          "current_template_index": 0
+        }
+      ]
+    },
+    {
+      "id": "account_2",
+      "username": "你的用户名2",
+      "password": "你的密码2",
+      "login_method": "password",
+      "enabled": false,
+      "reply_targets": [
+        {
+          "id": "target_2",
+          "url": "http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=38&extra=page%3D1",
+          "name": "项目讨论帖",
+          "enabled": true,
+          "interval_seconds": 7200,
+          "start_delay_seconds": 300,
+          "reply_templates": [
+            "项目讨论很有价值，继续加油！ - {timestamp}",
+            "这个项目思路不错，值得借鉴！ - {timestamp}",
+            "技术交流很有意义，感谢分享！ - {timestamp}"
+          ],
+          "current_template_index": 0
+        }
+      ]
+    }
+  ],
+  "browser": {
+    "headless": true,
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "window_size": "1920,1080"
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "timed_reply.log",
+    "max_size_mb": 10,
+    "backup_count": 5
+  },
+  "global_settings": {
+    "max_concurrent_accounts": 3,
+    "retry_attempts": 3,
+    "retry_delay_seconds": 30,
+    "check_interval_seconds": 60
+  }
+}

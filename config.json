@@ -1,0 +1,93 @@
+{
+  "forum": {
+    "base_url": "http://bbs.zelostech.com.cn",
+    "name": "ZelosTech论坛"
+  },
+  "accounts": [
+    {
+      "id": "account_1",
+      "username": "yurisun",
+      "password": "sunyuting0",
+      "login_method": "password",
+      "enabled": true,
+      "reply_targets": [
+         {
+           "id": "target_1",
+           "url": "http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37",
+           "name": "回复帖子给金币",
+           "enabled": true,
+           "interval_seconds": 2222,
+           "start_delay_seconds": 0,
+           "reply_templates": [
+             "希腊掌管金币神赐我金币1",
+             "希腊掌管金币神赐我金币2"
+           ],
+           "current_template_index": 0
+         },
+         {
+           "id": "target_2", 
+           "url": "http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=7&extra=page%3D1",
+           "name": "快速赚取金币的方法",
+           "enabled": true,
+           "interval_seconds": 3333,
+           "start_delay_seconds": 30,
+           "reply_templates": [
+             "庄sir发红包"
+           ],
+           "current_template_index": 0
+         }
+      ]
+    },
+    {
+      "id": "account_2",
+      "username": "孙玉铤",
+      "password": "zaq1@WSX",
+      "login_method": "password", 
+      "enabled": true,
+      "reply_targets": [
+        {
+          "id": "target_1",
+          "url": "http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37",
+          "name": "回复帖子给金币",
+          "enabled": true,
+          "interval_seconds": 2222,
+          "start_delay_seconds": 60,
+          "reply_templates": [
+            "希腊掌管金币神 赐我金币",
+            "希腊掌管金币神 赐我金币"
+          ],
+          "current_template_index": 0
+        },
+        {
+          "id": "target_2", 
+          "url": "http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=7&extra=page%3D1",
+          "name": "快速赚取金币的方法",
+          "enabled": true,
+          "interval_seconds": 3333,
+          "start_delay_seconds": 120,
+          "reply_templates": [
+            "庄sir发红包"
+          ],
+          "current_template_index": 0
+        }
+      ]
+    }
+  ],
+  "browser": {
+    "headless": true,
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "window_size": "1920,1080"
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "timed_reply.log",
+    "max_size_mb": 10,
+    "backup_count": 5
+  },
+  "global_settings": {
+    "max_concurrent_accounts": 3,
+    "retry_attempts": 3,
+    "retry_delay_seconds": 30,
+    "check_interval_seconds": 60
+  }
+}
