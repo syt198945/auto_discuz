@@ -16,25 +16,59 @@
            "url": "http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=37",
            "name": "回复帖子给金币",
            "enabled": true,
-           "interval_seconds": 2222,
-           "start_delay_seconds": 0,
+           "interval_seconds": 3000,
+           "start_delay_seconds": 234,
            "reply_templates": [
              "希腊掌管金币神赐我金币1",
              "希腊掌管金币神赐我金币2"
            ],
-           "current_template_index": 0
+           "current_template_index": 0,
+           "joke_generation": {
+             "enabled": false,
+             "category": "any",
+             "format": "story_format",
+             "include_metadata": false,
+             "prefix": "",
+             "suffix": ""
+           }
          },
          {
            "id": "target_2", 
            "url": "http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=7&extra=page%3D1",
            "name": "快速赚取金币的方法",
            "enabled": true,
-           "interval_seconds": 3333,
-           "start_delay_seconds": 30,
+           "interval_seconds": 3000,
+           "start_delay_seconds": 1140,
            "reply_templates": [
              "庄sir发红包"
            ],
-           "current_template_index": 0
+           "current_template_index": 0,
+           "joke_generation": {
+             "enabled": false,
+             "category": "programming",
+             "format": "forum_post",
+             "include_metadata": false,
+             "prefix": "",
+             "suffix": ""
+           }
+         },
+         {
+           "id": "target_3",
+           "url": "http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=27",
+           "name": "笑话接龙",
+           "enabled": true,
+           "interval_seconds": 3960,
+           "start_delay_seconds": 0,
+           "reply_templates": [],
+           "current_template_index": 0,
+           "joke_generation": {
+             "enabled": true,
+             "category": "any",
+             "format": "simple",
+             "include_metadata": false,
+             "prefix": "\n\n",
+             "suffix": "\n\n"
+           }
          }
       ]
     },
@@ -56,7 +90,15 @@
             "希腊掌管金币神 赐我金币",
             "希腊掌管金币神 赐我金币"
           ],
-          "current_template_index": 0
+          "current_template_index": 0,
+          "joke_generation": {
+            "enabled": false,
+            "category": "any",
+            "format": "story_format",
+            "include_metadata": false,
+            "prefix": "",
+            "suffix": ""
+          }
         },
         {
           "id": "target_2", 
@@ -64,11 +106,55 @@
           "name": "快速赚取金币的方法",
           "enabled": true,
           "interval_seconds": 3333,
-          "start_delay_seconds": 120,
+          "start_delay_seconds": 1200,
           "reply_templates": [
             "庄sir发红包"
           ],
-          "current_template_index": 0
+          "current_template_index": 0,
+          "joke_generation": {
+            "enabled": false,
+            "category": "dad",
+            "format": "social_media",
+            "include_metadata": true,
+            "prefix": "😄 今日笑话分享：",
+            "suffix": "祝大家开心！"
+          }
+        },
+        {
+          "id": "target_3",
+          "url": "http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=27",
+          "name": "笑话接龙",
+          "enabled": true,
+          "interval_seconds": 3960,
+          "start_delay_seconds": 2000,
+          "reply_templates": [],
+          "current_template_index": 0,
+          "joke_generation": {
+            "enabled": true,
+            "category": "any",
+            "format": "simple",
+            "include_metadata": false,
+            "prefix": "[笑话接龙]\n\n今天给大家分享一个笑话：\n\n",
+            "suffix": "\n\n希望大家喜欢！\n\n欢迎大家继续接龙！"
+          }
+        },
+        {
+          "id": "target_4",
+          "url": "http://bbs.zelostech.com.cn/forum.php?mod=viewthread&tid=48",
+          "name": "笑话接龙",
+          "enabled": true,
+          "interval_seconds": 3960,
+          "start_delay_seconds": 3000,
+          "reply_templates": [],
+          "current_template_index": 0,
+          "joke_generation": {
+            "enabled": false,
+            "category": "any",
+            "format": "simple",
+            "include_metadata": false,
+            "prefix": "[笑话接龙]\n\n今天给大家分享一个笑话：\n\n",
+            "suffix": "\n\n希望大家喜欢！\n\n欢迎大家继续接龙！"
+          }
         }
       ]
     }

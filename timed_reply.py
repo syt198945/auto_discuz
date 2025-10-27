@@ -16,6 +16,15 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
+# 导入笑话生成模块
+sys.path.append(os.path.join(os.path.dirname(__file__), 'content', 'joke_stories'))
+try:
+    from joke_generator import JokeGenerator
+    JOKE_GENERATOR_AVAILABLE = True
+except ImportError as e:
+    print(f"警告: 无法导入笑话生成模块: {e}")
+    JOKE_GENERATOR_AVAILABLE = False
+
 class ConfigManager:
     """配置文件管理器"""
     def __init__(self, config_file='config.json'):
@@ -56,6 +65,17 @@ class TimedReplyBot:
         self.reply_stats = {}  # 存储每个账户的回复统计
         self.running = False
         self.threads = []
+        
+        # 初始化笑话生成器
+        if JOKE_GENERATOR_AVAILABLE:
+            self.joke_generator = JokeGenerator()
+            self.logger = logging.getLogger(__name__)
+            self.logger.info("笑话生成器已启用")
+        else:
+            self.joke_generator = None
+            self.logger = logging.getLogger(__name__)
+            self.logger.warning("笑话生成器不可用，将使用默认回复模板")
+        
         self.setup_logging()
     
     def setup_logging(self):
@@ -259,7 +279,40 @@ class TimedReplyBot:
             return False
     
     def get_reply_message(self, target):
-        """生成回复消息（随机选择模板）"""
+        """生成回复消息（支持笑话生成和模板）"""
+        # 检查是否启用笑话生成
+        joke_config = target.get('joke_generation', {})
+        if joke_config.get('enabled', False) and self.joke_generator:
+            try:
+                # 获取笑话生成配置
+                category = joke_config.get('category', 'any')
+                format_type = joke_config.get('format', 'story_format')
+                
+                # 生成笑话
+                joke_message = self.joke_generator.generate_joke_text(
+                    count=1,
+                    format_type=format_type,
+                    category=category,
+                    include_metadata=joke_config.get('include_metadata', False)
+                )
+                
+                # 如果配置了笑话前缀或后缀，添加它们
+                prefix = joke_config.get('prefix', '')
+                suffix = joke_config.get('suffix', '')
+                
+                if prefix:
+                    joke_message = f"{prefix}\n\n{joke_message}"
+                if suffix:
+                    joke_message = f"{joke_message}\n\n{suffix}"
+                
+                self.logger.info(f"使用笑话生成器生成回复消息，类别: {category}, 格式: {format_type}")
+                return joke_message
+                
+            except Exception as e:
+                self.logger.error(f"笑话生成失败，回退到模板模式: {e}")
+                # 如果笑话生成失败，回退到模板模式
+        
+        # 使用传统模板模式
         templates = target.get('reply_templates', [])
         if not templates:
             return f"我在认真的水帖, - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
@@ -392,20 +445,37 @@ class TimedReplyBot:
                 else:
                     print(f"     ⏳ 开始延迟: 立即开始")
                 
-                # 显示模板概要
-                templates = target.get('reply_templates', [])
-                print(f"     📝 模板概要 ({len(templates)}个，随机选择):")
-                
-                for i, template in enumerate(templates):
-                    # 处理模板格式
-                    if isinstance(template, dict):
-                        content = template.get('content', '')
-                    else:
-                        content = template
+                # 显示笑话生成状态
+                joke_config = target.get('joke_generation', {})
+                if joke_config.get('enabled', False):
+                    category = joke_config.get('category', 'any')
+                    format_type = joke_config.get('format', 'story_format')
+                    print(f"     😄 笑话生成: 启用 (类别: {category}, 格式: {format_type})")
                     
-                    # 截断过长的内容
-                    display_content = content[:50] + "..." if len(content) > 50 else content
-                    print(f"       {i+1}. {display_content}")
+                    prefix = joke_config.get('prefix', '')
+                    suffix = joke_config.get('suffix', '')
+                    if prefix or suffix:
+                        print(f"     📝 前缀/后缀: {prefix}...{suffix}")
+                else:
+                    print(f"     😄 笑话生成: 禁用")
+                
+                # 显示模板概要（仅当笑话生成禁用时显示）
+                if not joke_config.get('enabled', False):
+                    templates = target.get('reply_templates', [])
+                    print(f"     📝 模板概要 ({len(templates)}个，随机选择):")
+                    
+                    for i, template in enumerate(templates):
+                        # 处理模板格式
+                        if isinstance(template, dict):
+                            content = template.get('content', '')
+                        else:
+                            content = template
+                        
+                        # 截断过长的内容
+                        display_content = content[:50] + "..." if len(content) > 50 else content
+                        print(f"       {i+1}. {display_content}")
+                else:
+                    print(f"     📝 回复模式: 笑话生成模式")
         
         print("\n" + "=" * 120)
         print("按 Ctrl+C 停止机器人")
