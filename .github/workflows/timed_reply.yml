@@ -1,0 +1,79 @@
+name: 定时回复机器人
+
+on:
+  schedule:
+    # 工作日 8:00-23:00 分段运行（解决 GitHub Actions 6小时限制）
+    # 北京时间 UTC+8
+    # 第一段：8:00-14:00（6小时）- UTC 0:00 启动（北京时间 8:00）
+    - cron: '0 0 * * 1-5'  # 周一到周五 UTC 0:00 (北京时间 8:00)
+    # 第二段：14:00-20:00（6小时）- UTC 6:00 启动（北京时间 14:00）
+    - cron: '0 6 * * 1-5'  # 周一到周五 UTC 6:00 (北京时间 14:00)
+    # 第三段：20:00-23:00（3小时）- UTC 12:00 启动（北京时间 20:00）
+    - cron: '0 12 * * 1-5'  # 周一到周五 UTC 12:00 (北京时间 20:00)
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  run-timed-reply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360  # 最长运行 6 小时
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v3
+    
+    - name: 设置 Python 环境
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: 安装系统依赖
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wget gnupg unzip
+    
+    - name: 安装 Chrome 浏览器
+      run: |
+        wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+        echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
+    
+    - name: 安装 ChromeDriver
+      run: |
+        CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | cut -d. -f1)
+        CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION}")
+        wget -O /tmp/chromedriver.zip "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
+        unzip /tmp/chromedriver.zip -d /tmp/
+        sudo mv /tmp/chromedriver /usr/local/bin/chromedriver
+        sudo chmod +x /usr/local/bin/chromedriver
+    
+    - name: 安装 Python 依赖
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: 检查配置文件
+      run: |
+        if [ ! -f config.json ]; then
+          echo "配置文件 config.json 不存在，请创建配置文件"
+          exit 1
+        fi
+        echo "配置文件检查通过"
+    
+    - name: 运行定时回复脚本
+      env:
+        TZ: Asia/Shanghai
+      run: |
+        python timed_reply.py
+      continue-on-error: true  # 允许脚本失败后继续
+    
+    - name: 上传日志文件
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: timed_reply_logs
+        path: |
+          timed_reply.log
+          *.log
+        retention-days: 7
+

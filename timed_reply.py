@@ -66,6 +66,13 @@ class TimedReplyBot:
         self.running = False
         self.threads = []
         
+        # 工作时间配置（从配置文件中读取，默认 8:00-23:00 工作日）
+        self.work_hours = self.config.get('work_hours', {
+            'start_hour': 8,
+            'end_hour': 23,
+            'weekdays_only': True  # 仅工作日
+        })
+        
         # 初始化笑话生成器
         if JOKE_GENERATOR_AVAILABLE:
             self.joke_generator = JokeGenerator()
@@ -103,6 +110,28 @@ class TimedReplyBot:
             handlers=[file_handler, console_handler]
         )
         self.logger = logging.getLogger(__name__)
+    
+    def is_within_work_hours(self):
+        """检查当前时间是否在工作时间内"""
+        now = datetime.now()
+        current_hour = now.hour
+        current_weekday = now.weekday()  # 0=周一, 6=周日
+        
+        start_hour = self.work_hours.get('start_hour', 8)
+        end_hour = self.work_hours.get('end_hour', 23)
+        weekdays_only = self.work_hours.get('weekdays_only', True)
+        
+        # 检查是否工作日
+        if weekdays_only and current_weekday >= 5:  # 周六、周日
+            self.logger.debug(f"当前是周末（周{current_weekday+1}），不在工作时间内")
+            return False
+        
+        # 检查是否在时间范围内
+        if current_hour < start_hour or current_hour >= end_hour:
+            self.logger.debug(f"当前时间 {current_hour} 不在工作时间范围内（{start_hour}-{end_hour}）")
+            return False
+        
+        return True
     
     def init_driver(self, account_id):
         """为指定账户初始化浏览器驱动"""
@@ -516,6 +545,13 @@ class TimedReplyBot:
                 for i in range(interval_seconds, 0, -1):
                     if not self.running:
                         break
+                    
+                    # 检查是否在工作时间内
+                    if not self.is_within_work_hours():
+                        self.logger.info(f"账户 {account_id} 目标 {target_id} 不在工作时间内，停止运行")
+                        self.running = False
+                        break
+                    
                     time.sleep(1)
                     
                     # 每10秒显示一次统计信息
@@ -529,6 +565,13 @@ class TimedReplyBot:
     def run_timed_reply(self):
         """运行多账户定时回复任务"""
         self.logger.info("启动多账户定时回复任务")
+        
+        # 检查是否在工作时间内
+        if not self.is_within_work_hours():
+            now = datetime.now()
+            self.logger.info(f"当前时间 {now.strftime('%Y-%m-%d %H:%M:%S')} 不在工作时间内，退出")
+            return
+        
         self.running = True
         
         # 获取启用的账户
@@ -566,6 +609,13 @@ class TimedReplyBot:
         try:
             # 主循环显示统计信息
             while self.running:
+                # 检查是否仍在工作时间内
+                if not self.is_within_work_hours():
+                    now = datetime.now()
+                    self.logger.info(f"到达工作时间结束时间 {now.strftime('%Y-%m-%d %H:%M:%S')}，停止运行")
+                    self.running = False
+                    break
+                
                 self.display_stats()
                 time.sleep(10)
                 

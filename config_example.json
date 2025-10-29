@@ -69,5 +69,10 @@
     "retry_attempts": 3,
     "retry_delay_seconds": 30,
     "check_interval_seconds": 60
+  },
+  "work_hours": {
+    "start_hour": 8,
+    "end_hour": 23,
+    "weekdays_only": true
   }
 }
